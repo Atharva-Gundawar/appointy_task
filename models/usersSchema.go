@@ -11,5 +11,4 @@ type User struct{
 	Posts			Pets []struct {
 					Post_ID 		string 				`json:"id" bson:"_id"`
 					} 							`json:"posts" bson:"posts"`
-
 }

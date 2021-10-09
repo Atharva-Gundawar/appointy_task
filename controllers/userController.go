@@ -1,6 +1,7 @@
 package userControllers
 
 import (
+
 "fmt"
 "encoding/json"
 "github.com/julienschmidt/httprouter"
@@ -9,8 +10,10 @@ import (
 "github.com/Atharva-Gundawar/appointy_task/models"
 "golang.org/x/crypto/bcrypt"
 "net/http"
+
 )
 
+// Getting mongo Session 
 type UserController struct{
 	session *mgo.Session
 }
@@ -30,15 +33,15 @@ func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, p httpr
 
 	u := models.User{}
 
-  if err := uc.session.DB("mongo-golang").C("users").FindId(oid).One(&u); err != nil{
-	w.WriteHeader(404)
-	return
-   }
+	if err := uc.session.DB("mongo-golang").C("users").FindId(oid).One(&u); err != nil{
+		w.WriteHeader(404)
+		return
+	}
 
-   uj, err :=json.Marshal(u)
-   if err!= nil{
-	   fmt.Println(err)
-   }
+	uj, err :=json.Marshal(u)
+	if err!= nil{
+		fmt.Println(err)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

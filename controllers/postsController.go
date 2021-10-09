@@ -1,6 +1,7 @@
 package postControllers
 
 import (
+
 "fmt"
 "encoding/json"
 "github.com/julienschmidt/httprouter"
@@ -9,8 +10,10 @@ import (
 "github.com/Atharva-Gundawar/appointy_task/models"
 "golang.org/x/crypto/bcrypt"
 "net/http"
+
 )
 
+// Getting mongo Session 
 type PostController struct{
 	session *mgo.Session
 }
@@ -69,7 +72,7 @@ func (uc PostController) GetPosts(w http.ResponseWriter, r *http.Request, p http
         if err := uc.session.DB("mongo-golang").C("posts").FindId(oid).One(&p); err != nil{
 			posts_ids[i] := u.FieldByName("id")
 			return
-			   }
+			}
     }
 	
 	uj, err :=json.Marshal(posts_ids)
