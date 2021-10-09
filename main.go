@@ -1,17 +1,35 @@
 package main
 
+import (
+	"github.com/julienschmidt/httprouter"
+	"gopkg.in/mgo.v2"
+	"net/http"
+	
+	"github.com/Atharva-Gundawar/appointy_task/controllers"
+)
+	
+func main(){
+
+	r := httprouter.New()
+
+	uc := userControllers.NewUserController(getSession())
+	pc := postControllers.NewPostController(getSession())
+
+	r.GET("/user/:id", uc.GetUser)
+	r.POST("/user", uc.CreateUser)
+	r.GET("/post/:id", pc.GetPost)
+	r.GET("/post/users/:id", pc.GetPosts)
+	r.POST("/post", pc.CreatePost)
+
+	http.ListenAndServe("localhost:9000", r)
+}
 
 
-func main() {
-	app := fiber.New()
-	// User paths
-	app.Post("/user", createuser)  				// Create new user
-	app.Get("/user/:id?", getuser) 				// Get exsisting user by user id
-	
-	// Post paths
-	app.Post("/posts", createuser)  			// Create new post
-	app.Get("/posts/:id?", getuser)				// Get existing post by post id
-	app.Get("/posts/users/:id?", getuser)		// Get all the posts of a user using user id
-	
-	app.Listen(port)
-  }
+func getSession() *mgo.Session{
+
+	s, err := mgo.Dial("mongodb://localhost:27017")
+	if err != nil{
+		panic(err)
+	}
+	return s
+}
