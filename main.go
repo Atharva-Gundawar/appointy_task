@@ -1,4 +1,6 @@
-import “github.com/gofiber/fiber”
+package main
+
+
 
 func main() {
 	app := fiber.New()
